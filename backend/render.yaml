@@ -11,14 +11,10 @@ services:
       - key: PORT
         value: 10000
       - key: DATABASE_URL
-        fromDatabase:
-          name: qr-engine-db
-          property: connectionString
+        placeholder: "postgresql://..."
       - key: DIRECT_URL
-        fromDatabase:
-          name: qr-engine-db
-          property: connectionString
+        placeholder: "postgresql://..."
       - key: SUPABASE_JWT_SECRET
-        sync: false
+        placeholder: "eyJhb..."
       - key: FRONTEND_URL
-        sync: false
+        placeholder: "https://your-app.vercel.app"
