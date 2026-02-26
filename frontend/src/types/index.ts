@@ -38,6 +38,7 @@ export interface AnalyticsSummary {
 export interface ScanLog {
     id: string;
     scannedAt: string;
+    ipAddress?: string | null;
     os?: string;
     browser?: string;
     deviceType?: string;
@@ -50,4 +51,6 @@ export interface DetailedQRAnalytics {
     recentLogs: ScanLog[];
     osStats: Record<string, number>;
     deviceStats: Record<string, number>;
+    countryStats: Record<string, number>;
+    cityStats: Record<string, number>;
 }

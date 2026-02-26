@@ -49,11 +49,25 @@ export class AnalyticsService {
             return acc;
         }, {});
 
+        const countryStats = logs.reduce((acc: Record<string, number>, log: { country: string | null }) => {
+            const country = log.country || 'Unknown';
+            acc[country] = (acc[country] || 0) + 1;
+            return acc;
+        }, {});
+
+        const cityStats = logs.reduce((acc: Record<string, number>, log: { city: string | null }) => {
+            const city = log.city || 'Unknown';
+            acc[city] = (acc[city] || 0) + 1;
+            return acc;
+        }, {});
+
         return {
             totalScans: qr.scanCount,
             recentLogs: logs.slice(0, 100),
             osStats,
-            deviceStats
+            deviceStats,
+            countryStats,
+            cityStats
         };
     }
 }

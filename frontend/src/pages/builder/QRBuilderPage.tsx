@@ -122,8 +122,9 @@ export const QRBuilderPage = () => {
   };
 
   if (generatedQR) {
-    // Generate an accessible network URL using the current host so mobile phones can resolve the backend on the same Wi-Fi
-    const qrUrl = `${window.location.protocol}//${window.location.hostname}:5000/r/${generatedQR.shortId}`;
+    // Generate a tunnel-compatible URL using the backend tunnel address
+    const backendBaseUrl = import.meta.env.VITE_API_URL?.replace('/api/v1', '') || `${window.location.protocol}//${window.location.hostname}:5000`;
+    const qrUrl = `${backendBaseUrl}/r/${generatedQR.shortId}`;
     return (
       <motion.div
         variants={containerVariants}
@@ -140,15 +141,15 @@ export const QRBuilderPage = () => {
               <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
               <QRCodeSVG
                 value={qrUrl}
-                size={200}
+                size={320}
                 fgColor={formData.gradientType !== "none" ? `url(#qr-gradient-${formData.gradientType})` : formData.color}
                 bgColor={formData.bgColor}
                 imageSettings={formData.logoUrl ? {
                   src: formData.logoUrl,
                   x: undefined,
                   y: undefined,
-                  height: 48,
-                  width: 48,
+                  height: 64,
+                  width: 64,
                   excavate: true,
                 } : undefined}
                 level="H"
