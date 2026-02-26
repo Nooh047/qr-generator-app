@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  qrCodes   QRCode[]
+}
+
+model QRCode {
+  id               String   @id @default(uuid())
+  userId           String?  // Made optional for anonymous users
+  user             User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title            String
+  qrType           String  // "URL" or "WHATSAPP"
+  
+  targetUrl        String?
+  whatsappNumber   String?
+  whatsappText     String?
+  
+  shortId          String   @unique
+  
+  visualSettings   String?  // JSON stringified
+  
+  scanCount        Int      @default(0)
+  
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  scanLogs         ScanLog[]
+
+  @@index([shortId])
+  @@index([userId])
+}
+
+model ScanLog {
+  id          String   @id @default(uuid())
+  qrCodeId    String
+  qrCode      QRCode   @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+  
+  scannedAt   DateTime @default(now())
+  
+  ipAddress   String?
+  userAgent   String?
+  deviceType  String?
+  os          String?
+  browser     String?
+  country     String?
+  city        String?
+  
+  @@index([qrCodeId])
+}
+

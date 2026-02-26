@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: qr-engine-backend
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: qr-engine-db
+          property: connectionString
+      - key: DIRECT_URL
+        fromDatabase:
+          name: qr-engine-db
+          property: connectionString
+      - key: SUPABASE_JWT_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
